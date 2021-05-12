@@ -35,29 +35,19 @@ public class Manager {
             if (!validatePhone(phoneNum)) {
                 System.out.println("Số điện thoại không đúng định dạng!");
             } else {
+                String group = inputGroup();
+                String name = inputName();
+                String gender = inputGender();
+                String address = inputAddress();
+                String birth = inputBirth();
                 while (true) {
-                    if (checkDuplicatePhone(phoneNum)) {
-                        String group = inputGroup();
-                        String name = inputName();
-                        String gender = inputGender();
-                        String address = inputAddress();
-                        String birth = inputBirth();
-                        while (true) {
-                            String email = inputEmail();
-                            if (!validateEmail(email)) {
-                                System.out.println("Email không đúng định dạng!");
-                            } else {
-                                while (true) {
-                                    if (checkDuplicateEmail(email)) {
-                                        Directory directory = new Directory(phoneNum, group, name, gender, address, birth, email);
-                                        DIRECTORY_LIST.add(directory);
-                                        System.out.println("Đã thêm thông tin vào danh bạ!");
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
+                    String email = inputEmail();
+                    if (!validateEmail(email)) {
+                        System.out.println("Email không đúng định dạng!");
+                    } else {
+                        Directory directory = new Directory(phoneNum, group, name, gender, address, birth, email);
+                        DIRECTORY_LIST.add(directory);
+                        System.out.println("Đã thêm thông tin vào danh bạ!");
                         break;
                     }
                 }
@@ -69,7 +59,9 @@ public class Manager {
 
     public void edit(String phone) {
         Directory directory = getDirectoryByPhone(phone);
-        if (directory != null) {
+        if (directory == null) {
+            System.out.println("Không tìm thấy danh bạ với số điện thoại trên!");
+        } else {
             directory.setGroup(inputGroup());
             directory.setName(inputName());
             directory.setGender(inputGender());
@@ -80,10 +72,8 @@ public class Manager {
                 if (!validateEmail(directory.getEmail())) {
                     System.out.println("Email không đúng định dạng!");
                 } else {
-                    if (checkDuplicateEmail(directory.getEmail())) {
-                        System.out.println("Đã sửa thông tin danh bạ!");
-                        break;
-                    }
+                    System.out.println("Đã sửa thông tin danh bạ!");
+                    break;
                 }
             }
         }
@@ -91,36 +81,37 @@ public class Manager {
 
     public void delete(String phone) {
         Directory directory = getDirectoryByPhone(phone);
-        if (directory != null) {
-            System.out.print("Nhập 'Y' để xác nhận xóa danh bạ, 'X' để hủy: ");
-            while (true) {
-                String choose = SCANNER.nextLine();
-                switch (choose) {
-                    case "Y":
-                        DIRECTORY_LIST.remove(directory);
-                        System.out.println("Đã xóa danh bạ!");
-                        Main.showMenu();
-                        break;
-                    case "X" :
-                        Main.showMenu();
-                        break;
-                    default:
-                        System.out.println("Vui lòng chọn 'Y' hoặc 'X'!");
-                }
+        if (directory == null) {
+            System.out.println("Không tìm thấy danh bạ với số điện thoại trên!");
+        } else {
+            System.out.print("Nhập 'Y' để xác nhận xóa danh bạ: ");
+            String choose = SCANNER.nextLine();
+            switch (choose) {
+                case "Y":
+                    DIRECTORY_LIST.remove(directory);
+                    System.out.println("Đã xóa danh bạ!");
+                    Main.showMenu();
+                    break;
+                default:
+                    System.out.println("Vui lòng chọn 'Y' để xóa!");
             }
         }
     }
 
     public void searchByName(String name) {
         Directory directory = getDirectoryByName(name);
-        if (directory != null) {
+        if (directory == null) {
+            System.out.println("Không tìm thấy danh bạ với tên trên!");
+        } else {
             System.out.println(directory);
         }
     }
 
     public void searchByPhoneNum(String phone) {
         Directory directory = getDirectoryByPhone(phone);
-        if (directory != null) {
+        if (directory == null) {
+            System.out.println("Không tìm thấy danh bạ với số điện thoại trên!");
+        } else {
             System.out.println(directory);
         }
     }
@@ -130,10 +121,7 @@ public class Manager {
         for (Directory directory1 : DIRECTORY_LIST) {
             if (directory1.getPhoneNum().equals(phone)) {
                 directory = directory1;
-                break;
             }
-            System.out.println("Không tìm thấy danh bạ với số điện thoại trên!");
-            break;
         }
         return directory;
     }
@@ -143,32 +131,9 @@ public class Manager {
         for (Directory directory1 : DIRECTORY_LIST) {
             if (directory1.getName().equals(name)) {
                 directory = directory1;
-                break;
             }
-            System.out.println("Không tìm thấy danh bạ với tên trên!");
-            break;
         }
         return directory;
-    }
-
-    public boolean checkDuplicatePhone(String phone) {
-        for (Directory directory : DIRECTORY_LIST) {
-            if (directory.getPhoneNum().equals(phone)) {
-                System.out.println("Số điện thoại đã được sử dụng!");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkDuplicateEmail(String email) {
-        for (Directory directory : DIRECTORY_LIST) {
-            if (directory.getEmail().equals(email)) {
-                System.out.println("Email đã được sử dụng!");
-                return false;
-            }
-        }
-        return true;
     }
 
     public boolean validateEmail(String regex) {
