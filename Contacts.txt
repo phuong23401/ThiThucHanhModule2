@@ -1,0 +1,4 @@
+phoneNum=0966666666, group='C0221I1, name='Phuongdz, gender='Nam, address='HN, bitrh='23/04/01, email='hoaphuong23401@gmail.com
+phoneNum=0988888888, group='C0221I1, name='Hadz, gender='Nam, address='HN, bitrh='xx/xx/97, email='hadz123@gmail.com
+phoneNum=0977777777, group='C0221I1, name='Khanhdz, gender='Nam, address='HN, bitrh='xx/xx/93, email='khanhdz123@gmail.com
+phoneNum=0911111111, group='qwe, name='qwe, gender='Nam, address='qwe, bitrh='qwe, email='qq@qq.qq
